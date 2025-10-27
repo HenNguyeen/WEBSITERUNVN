@@ -1,0 +1,154 @@
+﻿@model IEnumerable<DBStoreSport.Models.Voucher>
+@{
+    ViewBag.Title = "Quản lý Voucher";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/admin-dashboard.css" rel="stylesheet" />
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h2>🎫 Quản lý Voucher</h2>
+        <div>
+            <a href="@Url.Action("CreateSampleVouchers", "AdminVoucher")" class="btn btn-outline-secondary btn-sm me-2">
+                <i class="fas fa-magic"></i>
+                Tạo Mẫu
+            </a>
+            <a href="@Url.Action("Create", "AdminVoucher")" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i>
+                Thêm Voucher
+            </a>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <i class="fas fa-exclamation-triangle me-2"></i>
+            @TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Mã Voucher</th>
+                <th>Giá trị giảm</th>
+                <th>Loại</th>
+                <th>Ngày hết hạn</th>
+                <th>Trạng thái</th>
+                <th style="width: 220px;">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.VoucherID</td>
+                    <td>
+                        <span class="voucher-code">@item.Code</span>
+                    </td>
+                    <td>
+                        @if (item.Type == "Percent")
+                        {
+                            <span class="badge bg-info">@item.DiscountValue%</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">@item.DiscountValue.ToString("N0") VNĐ</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.Type == "Percent")
+                        {
+                            <span class="badge bg-primary">Phần trăm</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning">Cố định</span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.ExpiryDate < DateTime.Now)
+                        {
+                            <span class="text-danger">
+                                <i class="fas fa-clock"></i>
+                                @item.ExpiryDate.ToString("dd/MM/yyyy")
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="text-success">
+                                <i class="fas fa-calendar-check"></i>
+                                @item.ExpiryDate.ToString("dd/MM/yyyy")
+                            </span>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsUsed == true)
+                        {
+                            <span class="badge bg-secondary">Đã sử dụng</span>
+                        }
+                        else if (item.ExpiryDate < DateTime.Now)
+                        {
+                            <span class="badge bg-danger">Hết hạn</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">Có hiệu lực</span>
+                        }
+                    </td>
+                    <td>
+                        <a href="@Url.Action("Details", "AdminVoucher", new { id = item.VoucherID })" 
+                           class="btn btn-outline-info btn-sm me-1" title="Chi tiết">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="@Url.Action("Edit", "AdminVoucher", new { id = item.VoucherID })" 
+                           class="btn btn-outline-warning btn-sm me-1" title="Sửa">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <a href="@Url.Action("Delete", "AdminVoucher", new { id = item.VoucherID })" 
+                           class="btn btn-outline-danger btn-sm"
+                           onclick="return confirm('Bạn có chắc muốn xóa voucher này?');" title="Xóa">
+                            <i class="fas fa-trash"></i>
+                        </a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="fas fa-ticket-alt fa-3x text-muted mb-3"></i>
+            <h4 class="text-muted">Chưa có voucher nào</h4>
+            <p class="text-muted">Hãy tạo voucher đầu tiên để bắt đầu!</p>
+            <a href="@Url.Action("Create", "AdminVoucher")" class="btn btn-primary btn-sm">
+                <i class="fas fa-plus"></i>Tạo Voucher
+            </a>
+        </div>
+    }
+</div>
+
+<style>
+    .voucher-code {
+        font-family: 'Courier New', monospace;
+        font-weight: bold;
+        color: #22c55e;
+        background: #f0fdf4;
+        padding: 4px 8px;
+        border-radius: 4px;
+        border: 1px solid #bbf7d0;
+    }
+</style>

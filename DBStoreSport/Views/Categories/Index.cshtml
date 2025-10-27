@@ -1,0 +1,36 @@
+﻿@model IEnumerable<DBStoreSport.Models.Category>
+
+@{
+    ViewBag.Title = "Danh sách loại sản phẩm";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-4">
+    <h2 class="text-primary mb-3">📂 Danh sách loại sản phẩm</h2>
+
+    <p>
+        <a href="@Url.Action("Create")" class="btn btn-success mb-3">➕ Thêm loại mới</a>
+    </p>
+
+    <table class="table table-bordered table-hover shadow-sm">
+        <thead class="table-dark text-center">
+            <tr>
+                <th class="text-start">Tên Loại</th>
+                <th style="width: 220px;">Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-start">@Html.DisplayFor(modelItem => item.NameCate)</td>
+                    <td class="text-center">
+                        <a href="@Url.Action("Edit", new { id = item.IDCate })" class="btn btn-warning btn-sm">✏️ Sửa</a>
+                        <a href="@Url.Action("Details", new { id = item.IDCate })" class="btn btn-info btn-sm">🔍 Chi tiết</a>
+                        <a href="@Url.Action("Delete", new { id = item.IDCate })" class="btn btn-danger btn-sm">🗑️ Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,41 @@
+﻿@model IEnumerable<DBStoreSport.Models.OrderPro>
+
+@{
+    ViewBag.Title = "Danh sách đơn hàng";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="~/Content/admin-dashboard.css" rel="stylesheet" />
+
+<div class="admin-container">
+    <div class="admin-header">
+        <h2>📦 Danh sách đơn hàng</h2>
+        <a href="@Url.Action("Create")" class="admin-add-btn">➕ Tạo đơn hàng mới</a>
+    </div>
+    <table class="admin-table">
+        <thead>
+            <tr>
+                <th> Ngày đặt hàng</th>
+                <th> Địa chỉ giao hàng</th>
+                <th> Tên khách hàng</th>
+                <th> Trạng thái đơn</th>
+                <th style="width: 220px;"> Thao tác</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.DateOrder</td>
+                    <td>@Html.DisplayFor(modelItem => item.AddressDeliverry)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Customer.NameCus)</td>
+                    <td>@Html.DisplayFor(modelItem => item.Status)</td>
+                    <td>
+                        <a href="@Url.Action("Edit", new { id = item.ID })" class="admin-action-btn edit">✏️ Sửa</a>
+                        <a href="@Url.Action("Details", new { id = item.ID })" class="admin-action-btn detail">🔍 Chi tiết</a>
+                        <a href="@Url.Action("Delete", new { id = item.ID })" class="admin-action-btn delete">🗑️ Xóa</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

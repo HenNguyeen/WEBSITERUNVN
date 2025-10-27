@@ -1,0 +1,35 @@
+﻿@model List<DBStoreSport.Models.ContactMessage>
+@{
+    ViewBag.Title = "Quản lý liên hệ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="container mt-5">
+    <h2 class="mb-4 text-primary">📥 Danh sách liên hệ</h2>
+
+    <table class="table table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Họ tên</th>
+                <th>Email</th>
+                <th>Nội dung</th>
+                <th>Thời gian gửi</th>
+                <th>Hành động</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.Email</td>
+                    <td>@(item.Message.Length > 40 ? item.Message.Substring(0, 40) + "..." : item.Message)</td>
+                    <td>@item.SentDate?.ToString("dd/MM/yyyy HH:mm")</td>
+                    <td>
+                        @Html.ActionLink("📄 Chi tiết", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-info" }) |
+                        @Html.ActionLink("🗑 Xoá", "Delete", new { id = item.Id }, new { @class = "btn btn-sm btn-danger", onclick = "return confirm('Bạn có chắc muốn xóa liên hệ này?');" })
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

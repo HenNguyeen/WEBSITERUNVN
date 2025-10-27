@@ -1,0 +1,24 @@
+﻿@model DBStoreSport.Models.ContactMessage
+@{
+    ViewBag.Title = "Xác nhận xoá";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <h2 class="text-danger">⚠️ Xác nhận xoá liên hệ</h2>
+
+    <div class="alert alert-warning">
+        Bạn có chắc muốn xóa liên hệ từ <strong>@Model.Name</strong> (Email: @Model.Email) gửi lúc <strong>
+    @Model.SentDate?.ToString("dd/MM/yyyy HH:mm")
+    </strong>?
+    </div>
+
+    <p><strong>Nội dung:</strong></p>
+    <p>@Model.Message</p>
+
+    @using (Html.BeginForm())
+    {
+        <button type="submit" class="btn btn-danger">Xoá</button>
+        <a href="@Url.Action("Index")" class="btn btn-secondary">Huỷ</a>
+    }
+</div>

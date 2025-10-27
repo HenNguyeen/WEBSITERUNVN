@@ -1,0 +1,53 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@model IEnumerable<DBStoreSport.Models.ProductReview>
+
+<h2>Quản lý đánh giá sản phẩm</h2>
+<table class="table">
+    <tr>
+        <th>ID</th>
+        <th>Sản phẩm</th>
+        <th>Khách hàng</th>
+        <th>Điểm</th>
+        <th>Bình luận</th>
+        <th>Ngày tạo</th>
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.Id</td>
+            <td>
+                @(item.Product == null ? "NULL" : item.Product.NamePro)
+            </td>
+            <td>
+                @(item.Customer == null ? "NULL" : item.Customer.NameCus)
+            </td>
+            <td>@item.Rating</td>
+            <td>@item.Comment</td>
+            <td>@item.CreatedAt.ToString("dd/MM/yyyy HH:mm")</td>
+            <td>
+                @if (!string.IsNullOrEmpty(item.AdminReply))
+                {
+                    <div><b>Admin:</b> @item.AdminReply</div>
+                }
+                else
+                {
+                    using (Html.BeginForm("Reply", "AdminReview", FormMethod.Post))
+                    {
+                        @Html.Hidden("id", item.Id)
+                        <input type="text" name="reply" placeholder="Trả lời..." />
+                        <button type="submit">Gửi</button>
+                    }
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Xóa", "Delete", new { id = item.Id }, new { onclick = "return confirm('Xác nhận xóa?');" })
+            </td>
+        </tr>
+    }
+</table>
+

@@ -1,0 +1,286 @@
+﻿<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8" />
+    <title>@ViewBag.Title  RunVn_Shop</title>
+    <link rel="icon" sizes="32x32" href="~/Content/images/favicon.ico">
+
+    @using DBStoreSport.Models
+    @{
+        var db = new DBSportStoreEntities();
+        int contactUnreadCount = db.ContactMessages.Count(c => c.IsRead == false);
+
+    }
+
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/responsive")
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="~/Content/custom-layout.css" rel="stylesheet" />
+    <link href="~/Content/components.css" rel="stylesheet" />
+    <link href="~/Content/vietnamese-fonts.css" rel="stylesheet" />
+</head>
+<body class="vietnamese-text">
+    <!-- Header -->
+    <header class="main-header">
+        <nav class="navbar navbar-expand-lg">
+            <div class="container">
+                <a href="@Url.Action("Index", "Home")" class="navbar-brand">
+                    <i class="fas fa-shoe-prints"></i>
+                    <span>RunVn</span>
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+
+                        @if (Session["RoleUser"]?.ToString() != "admin")
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("ProductList", "Products")">
+                                    <i class="fas fa-shopping-bag"></i>
+                                    <span>Mua Hàng</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Index", "BlogPosts")">
+                                    <i class="fas fa-newspaper"></i>
+                                    <span>Ưu đãi</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Contact", "Home")">
+                                    <i class="fas fa-envelope"></i>
+                                    <span>Liên hệ</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("OrderHistory", "UserOrder")">
+                                    <i class="fas fa-receipt text-success"></i>
+                                    <span>Đơn hàng</span>
+                                </a>
+                            </li>
+                        }
+
+                        @if (Session["RoleUser"] != null && Session["RoleUser"].ToString() == "admin")
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="javascript:void(0);" id="adminDropdownBtn"
+                                   data-bs-toggle="dropdown" aria-expanded="false">
+                                    <i class="fas fa-cog"></i>
+                                    <span>Quản lý</span>
+                                </a>
+                                <ul class="dropdown-menu" aria-labelledby="adminDropdownBtn">
+
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Products")">
+                                            <i class="fas fa-box"></i>QL Sản phẩm
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "AdminStock")">
+                                            <i class="fas fa-box"></i>QL Tồn kho
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Categories")">
+                                            <i class="fas fa-tags"></i>QL Loại SP
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "Customers")">
+                                            <i class="fas fa-users"></i>QL Khách hàng
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "OrderProes")">
+                                            <i class="fas fa-shopping-cart"></i>QL Đơn hàng
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("PendingOrders", "OrderProes")">
+                                            <i class="fas fa-shopping-cart"></i>Duyệt đơn
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Lietke", "BlogPosts")">
+                                            <i class="fas fa-pen-nib"></i>QL Blog
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "AdminContact")">
+                                            <i class="fas fa-envelope"></i>QL Email
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "AdminReview")">
+                                            <i class="fas fa-comment-dots"></i>QL Comment
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="@Url.Action("Index", "AdminVoucher")">
+                                            <i class="fas fa-ticket-alt"></i>QL Voucher
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a class="dropdown-item text-warning" href="@Url.Action("Dashboard", "Admin")">
+                                            <i class="fas fa-chart-bar"></i>Dashboard
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li class="nav-item position-relative">
+                                <a class="nav-link" href="@Url.Action("Index", "AdminContact")" title="Liên hệ mới">
+                                    <i class="fas fa-bell fa-lg"></i>
+                                    @if (contactUnreadCount > 0)
+                                    {
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                            @contactUnreadCount
+                                        </span>
+                                    }
+                                </a>
+                            </li>
+                        }
+                    </ul>
+
+                    @if (Session["RoleUser"] == null || Session["RoleUser"].ToString() != "admin")
+                    {
+                        <ul class="navbar-nav me-3">
+                            <li class="nav-item position-relative">
+                                @Html.Action("BagCart", "ShoppingCart")
+                            </li>
+                        </ul>
+                    }
+
+                    <ul class="navbar-nav user-menu">
+                        @if (Session["UserName"] != null)
+                        {
+
+                            <li class="nav-item">
+
+                                <a class="nav-link" href="@Url.Action("Profile", "Account")">
+                                    <i class="fas fa-user-edit"></i>
+                                    <span>Xin chào, @Session["UserName"]</span>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Logout", "Account")">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span>Đăng xuất</span>
+                                </a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" href="@Url.Action("Login", "Account")">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    <span>Đăng nhập</span>
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    @{
+        var controller = ViewContext.RouteData.Values["controller"]?.ToString();
+        var action = ViewContext.RouteData.Values["action"]?.ToString();
+        var isHideSidebarSection =
+            controller == "Account" ||
+            controller == "OrderDetails" ||
+            controller == "Admin" ||
+            controller == "AdminReview" ||
+            controller == "AdminStock" ||
+            controller == "Products" ||
+            controller == "Categories" ||
+            controller == "Customers" ||
+            controller == "OrderProes" ||
+            controller == "AdminContact" ||
+             controller == "AdminVoucher" ||
+            (controller == "BlogPosts" && action == "Lietke") ||
+            (controller == "Home" && action == "Index") ||
+            (controller == "Account" && (action == "Profile" || action == "EditProfile")) ||
+            controller == "ShoppingCart";
+    }
+    @if (!isHideSidebarSection)
+    {
+        <!-- Sidebar Toggle Button -->
+        <button class="sidebar-toggle" onclick="toggleSidebar()">
+            <i class="fas fa-bars"></i>
+            <span>Danh mục</span>
+        </button>
+    }
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container-fluid px-0">
+            <div class="body-content fade-in">
+                <div class="row g-0">
+                    @if (!isHideSidebarSection)
+                    {
+                        <div class="col-lg-2 col-md-3" id="sidebarMenu">
+                            @{ Html.RenderAction("CategoryPartial", "Categories"); }
+                        </div>
+                        <div class="col-lg-10 col-md-9" id="div-content">
+                            @RenderBody()
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="col-12" id="div-content">
+                            @RenderBody()
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6 col-md-6 mb-4">
+                    <h5><i class="fas fa-store me-2"></i>RunVN_SHOP</h5>
+                    <p><i class="fas fa-map-marker-alt me-2"></i>Địa chỉ: 3/2 Sư Vạn Hạnh, TP.HCM</p>
+                    <p><i class="fas fa-envelope me-2"></i>Email: RunVN@gmail.com</p>
+                    <p><i class="fas fa-phone me-2"></i>Hotline: 0909 123 456</p>
+                </div>
+                <div class="col-lg-6 col-md-6 mb-4">
+                    <h5><i class="fas fa-link me-2"></i>Liên kết</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="@Url.Action("Index","Home")"><i class="fas fa-home me-2"></i>Trang chủ</a></li>
+                        <li><a href="@Url.Action("Contact","Home")"><i class="fas fa-envelope me-2"></i>Liên hệ</a></li>
+                        <li><a href="@Url.Action("Index","BlogPosts")"><i class="fas fa-newspaper me-2"></i>Blog</a></li>
+
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 RunVN_SHOP. Tất cả quyền được bảo lưu.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    @Scripts.Render("~/bundles/responsive")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/SideBar")
+    <script src="~/Scripts/custom-layout.js"></script>
+
+    @RenderSection("scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,67 @@
+@{
+    ViewBag.Title = "Thanh toán thất bại";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-danger shadow">
+                <div class="card-header bg-danger text-white text-center">
+                    <h3 class="mb-0">❌ Thanh toán thất bại</h3>
+                </div>
+                <div class="card-body text-center">
+                    <div class="mb-4">
+                        <i class="fas fa-times-circle text-danger" style="font-size: 4rem;"></i>
+                    </div>
+                    
+                    <h4 class="text-danger mb-3">Rất tiếc, giao dịch không thành công!</h4>
+                    
+                    @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                    {
+                        <div class="alert alert-danger">
+                            <h6>Chi tiết lỗi:</h6>
+                            <p>@ViewBag.ErrorMessage</p>
+                        </div>
+                    }
+                    
+                    <div class="alert alert-info">
+                        <h6>🔍 Các nguyên nhân có thể:</h6>
+                        <ul class="text-start">
+                            <li>Thông tin thẻ không chính xác</li>
+                            <li>Tài khoản không đủ số dư</li>
+                            <li>Kết nối mạng không ổn định</li>
+                            <li>Thẻ bị khóa hoặc hết hạn</li>
+                            <li>Vượt quá hạn mức giao dịch</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="alert alert-warning">
+                        <h6>💡 Gợi ý:</h6>
+                        <ul class="text-start">
+                            <li>Kiểm tra lại thông tin thẻ/tài khoản</li>
+                            <li>Thử lại với phương thức thanh toán khác</li>
+                            <li>Chọn thanh toán khi nhận hàng (COD)</li>
+                            <li>Liên hệ ngân hàng để được hỗ trợ</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <a href="@Url.Action("ShowCart", "ShoppingCart")" class="btn btn-warning me-3">
+                            <i class="fas fa-shopping-cart"></i> Quay lại giỏ hàng
+                        </a>
+                        <a href="@Url.Action("Index", "Home")" class="btn btn-outline-secondary">
+                            <i class="fas fa-home"></i> Về trang chủ
+                        </a>
+                    </div>
+                    
+                    <div class="mt-3">
+                        <small class="text-muted">
+                            Nếu vấn đề vẫn tiếp tục, vui lòng liên hệ hotline: 1900-xxxx
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
